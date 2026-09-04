@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: f8_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # backend chỉ khởi động sau khi Postgres thực sự nhận kết nối,
+      # tránh lỗi "connection refused" lúc chạy migration.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    # image: public.ecr.aws/y0g8v4d3/fls-image:latest
+    working_dir: /app/api
+    environment:
+      - PYTHONPATH=/app/api
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/app/api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    entrypoint: [ "poetry", "run" ]
+    command:
+      - sh
+      - -c
+      - "alembic upgrade head && python -m seeds.run && fastapi dev main.py --host 0.0.0.0 --port 8000"
+
+volumes:
+  pgdata:

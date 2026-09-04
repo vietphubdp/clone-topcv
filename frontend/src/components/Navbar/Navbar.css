@@ -1,0 +1,173 @@
+.topcv-navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e9edeb;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.brand-logo-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.brand-logo-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 24px;
+  font-weight: 900;
+  color: #00b14f;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.brand-logo-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #00b14f 0%, #008037 100%);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-10deg);
+}
+
+.brand-slogan {
+  font-size: 9px;
+  color: #555555;
+  font-weight: 500;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #212f3f;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.nav-item:hover {
+  color: #00b14f;
+  background-color: #f4fbf7;
+}
+
+.nav-item .mui-icon {
+  font-size: 18px;
+  color: #666;
+  transition: transform 0.2s ease;
+}
+
+.nav-item:hover .mui-icon {
+  color: #00b14f;
+}
+
+.badge-pro {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 2px;
+  white-space: nowrap;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-register-candidate,
+.btn-register-employer,
+.btn-login,
+.btn-recruiter {
+  white-space: nowrap !important;
+}
+
+.btn-login {
+  background-color: #00b14f !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  padding: 6px 16px !important;
+  border-radius: 20px !important;
+  font-size: 13.5px !important;
+  text-transform: none !important;
+  box-shadow: none !important;
+  white-space: nowrap !important;
+}
+
+.btn-login:hover {
+  background-color: #009643 !important;
+}
+
+.btn-recruiter {
+  background-color: #e8ecf0 !important;
+  color: #212f3f !important;
+  font-weight: 600 !important;
+  padding: 6px 14px !important;
+  border-radius: 20px !important;
+  font-size: 13.5px !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+}
+
+.btn-recruiter:hover {
+  background-color: #dbe2e8 !important;
+}
+
+/* Mobile Sidebar Drawer Custom Styling */
+.mobile-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.mobile-drawer-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

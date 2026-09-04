@@ -1,0 +1,31 @@
+# ─── Secrets: TUYỆT ĐỐI không commit ───
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ─── Python / backend ───
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+
+# ─── IDE / OS ───
+.vscode/
+.idea/
+# Ghi chú phiên làm việc của trợ lý AI — không phải tài liệu dự án.
+.claude/
+.DS_Store
+Thumbs.db
+
+# ─── File tạm ───
+storage/
+*.log
+
+pgdata/

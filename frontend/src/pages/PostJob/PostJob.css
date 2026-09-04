@@ -1,0 +1,61 @@
+.postjob-page {
+  background-color: #f4f6f8;
+  min-height: 100vh;
+}
+
+.postjob-header-banner {
+  background: linear-gradient(135deg, #00b14f 0%, #008037 100%);
+  color: #ffffff;
+  padding: 32px 0 36px;
+  margin-bottom: 24px;
+}
+
+.postjob-section-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 28px 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #eef2f5;
+  margin-bottom: 24px;
+}
+
+.postjob-card-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #212f3f;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 4px solid #00b14f;
+  padding-left: 12px;
+}
+
+.postjob-field-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.postjob-required {
+  color: #ff4d4f;
+  margin-left: 4px;
+}
+
+.postjob-bottom-actions {
+  position: sticky;
+  bottom: 0;
+  background-color: #ffffff;
+  border-top: 1px solid #eef2f5;
+  padding: 16px 0;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+  z-index: 900;
+}
+
+@media (max-width: 768px) {
+  .postjob-section-card {
+    padding: 20px;
+  }
+}

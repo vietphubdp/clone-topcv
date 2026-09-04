@@ -1,0 +1,66 @@
+.ckeditor-container {
+  border: 1px solid #ccced1;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ckeditor-container:focus-within {
+  border-color: #00b14f;
+  box-shadow: 0 0 0 3px rgba(0, 177, 79, 0.15);
+}
+
+.ckeditor-toolbar {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ccced1;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.ckeditor-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-right: 8px;
+  margin-right: 8px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.ckeditor-btn-group:last-child {
+  border-right: none;
+}
+
+.ckeditor-editable {
+  min-height: 160px;
+  padding: 14px 16px;
+  outline: none;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #333333;
+}
+
+.ckeditor-editable p {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.ckeditor-editable ul,
+.ckeditor-editable ol {
+  padding-left: 24px;
+  margin-bottom: 8px;
+}
+
+.ckeditor-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #00b14f;
+  background-color: #e6f7ef;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 8px;
+}

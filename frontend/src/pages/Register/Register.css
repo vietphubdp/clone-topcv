@@ -1,0 +1,51 @@
+.register-page {
+  min-height: 100vh;
+  background-color: #f4f6f8;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Left Geometric Decorative Polygon */
+.register-left-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 140px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.register-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.register-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 680px;
+  padding: 36px 36px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  border: 1px solid #eef2f5;
+  box-sizing: border-box;
+}
+
+.register-footer-copyright {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: #888888;
+  position: relative;
+  z-index: 2;
+}

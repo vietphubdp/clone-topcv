@@ -1,0 +1,80 @@
+.hero-section {
+  position: relative;
+  background-color: #003426;
+  background-image: 
+    linear-gradient(135deg, rgba(0, 70, 50, 0.6) 0%, rgba(0, 30, 20, 0.9) 100%),
+    radial-gradient(circle at 10% 20%, rgba(0, 177, 79, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(0, 177, 79, 0.15) 0%, transparent 40%);
+  padding: 40px 16px 48px;
+  overflow: hidden;
+}
+
+/* Geometric Left Decorative Polygon */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -80px;
+  width: 320px;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 177, 79, 0.15) 0%, rgba(0, 70, 50, 0) 70%);
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+
+/* Geometric Right Decorative Polygon */
+.hero-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -80px;
+  width: 320px;
+  height: 100%;
+  background: linear-gradient(-135deg, rgba(0, 177, 79, 0.15) 0%, rgba(0, 70, 50, 0) 70%);
+  transform: skewX(20deg);
+  pointer-events: none;
+}
+
+.hero-container {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.hero-title {
+  text-align: center;
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hero-content-row {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 960px) {
+  .hero-content-row {
+    flex-direction: column;
+    align-items: center;
+  }
+}

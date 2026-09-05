@@ -52,8 +52,45 @@ const JobCard = ({ job }) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate('/job-detail');
+    if (job.slug) {
+      navigate(`/job/${job.slug}`);
+    } else {
+      navigate('/job-detail');
+    }
   };
+
+  const companyName = typeof job.company === 'string' ? job.company : job.company?.name || 'Công ty';
+  const logoText = job.logoText || companyName.substring(0, 2).toUpperCase();
+
+  let formattedSalary = job.salary;
+  if (typeof job.salary === 'object' && job.salary !== null) {
+    const { min, max, is_negotiable, type } = job.salary;
+    if (is_negotiable || type === 'AGREEMENT') {
+      formattedSalary = 'Thỏa thuận';
+    } else if (min && max) {
+      formattedSalary = `${(min / 1000000).toLocaleString('vi-VN')} - ${(max / 1000000).toLocaleString('vi-VN')} triệu`;
+    } else if (max) {
+      formattedSalary = `Tới ${(max / 1000000).toLocaleString('vi-VN')} triệu`;
+    } else if (min) {
+      formattedSalary = `Từ ${(min / 1000000).toLocaleString('vi-VN')} triệu`;
+    } else {
+      formattedSalary = 'Thỏa thuận';
+    }
+  } else if (!formattedSalary) {
+    formattedSalary = 'Thỏa thuận';
+  }
+
+  let formattedLocation = job.location;
+  if (!formattedLocation && Array.isArray(job.work_location) && job.work_location.length > 0) {
+    formattedLocation = job.work_location
+      .map((loc) => loc.city_name || loc.address_detail)
+      .filter(Boolean)
+      .join(', ') || 'Toàn quốc';
+  } else if (!formattedLocation) {
+    formattedLocation = 'Toàn quốc';
+  }
+
+  const badges = job.badges || (job.is_hot ? [{ type: 'hot', label: 'HOT' }] : []);
 
   return (
     <Box
@@ -63,7 +100,7 @@ const JobCard = ({ job }) => {
         borderRadius: '12px',
         p: '14px 16px',
         border: '1px solid #eef2f5',
-        borderLeft: job.hasAccentBorder ? '4px solid #00b14f' : '1px solid #eef2f5',
+        borderLeft: (job.hasAccentBorder || job.is_hot) ? '4px solid #00b14f' : '1px solid #eef2f5',
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
         display: 'flex',
         flexDirection: 'column',
@@ -101,26 +138,30 @@ const JobCard = ({ job }) => {
             overflow: 'hidden',
           }}
         >
-          <Typography
-            sx={{
-              fontWeight: 800,
-              fontSize: '11px',
-              color: job.logoColor || '#333',
-              textAlign: 'center',
-              lineHeight: 1.1,
-              wordBreak: 'break-word',
-            }}
-          >
-            {job.logoText}
-          </Typography>
+          {job.company?.logo_url ? (
+            <img src={job.company.logo_url} alt={companyName} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          ) : (
+            <Typography
+              sx={{
+                fontWeight: 800,
+                fontSize: '11px',
+                color: job.logoColor || '#00b14f',
+                textAlign: 'center',
+                lineHeight: 1.1,
+                wordBreak: 'break-word',
+              }}
+            >
+              {logoText}
+            </Typography>
+          )}
         </Box>
 
         {/* Job Title & Company */}
         <Box sx={{ flex: 1, minWidth: 0 }}>
           {/* Badges Row */}
-          {job.badges && job.badges.length > 0 && (
+          {badges && badges.length > 0 && (
             <Box sx={{ display: 'flex', gap: 0.6, mb: 0.5, flexWrap: 'wrap' }}>
-              {job.badges.map((b, idx) => renderBadge(b, idx))}
+              {badges.map((b, idx) => renderBadge(b, idx))}
             </Box>
           )}
 
@@ -173,7 +214,7 @@ const JobCard = ({ job }) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {job.company}
+              {companyName}
             </Typography>
           </Box>
         </Box>
@@ -202,7 +243,7 @@ const JobCard = ({ job }) => {
               whiteSpace: 'nowrap',
             }}
           >
-            {job.salary}
+            {formattedSalary}
           </Box>
           <Box
             sx={{
@@ -219,7 +260,7 @@ const JobCard = ({ job }) => {
               maxWidth: '120px',
             }}
           >
-            {job.location}
+            {formattedLocation}
           </Box>
         </Box>
 

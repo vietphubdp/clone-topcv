@@ -37,4 +37,14 @@ export const logoutUser = async () => {
   return response.data;
 };
 
+export const getCategories = async () => {
+  const response = await api.get('/categories');
+  return response.data;
+};
+
+export const getJobs = async (params = {}) => {
+  const response = await api.get('/jobs', { params });
+  return response.data;
+};
+
 export default api;

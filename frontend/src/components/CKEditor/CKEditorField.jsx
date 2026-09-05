@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Box, IconButton, Tooltip, MenuItem, Select } from '@mui/material';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
@@ -14,22 +14,41 @@ import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import './CKEditorField.css';
 
-const CKEditorField = ({ initialContent, placeholder }) => {
+const CKEditorField = ({ initialContent = '', value, onChange, placeholder }) => {
   const editableRef = useRef(null);
 
-  const executeCommand = (command, value = null) => {
-    document.execCommand(command, false, value);
+  useEffect(() => {
     if (editableRef.current) {
-      editableRef.current.focus();
+      if (value !== undefined) {
+        if (editableRef.current.innerHTML !== value) {
+          editableRef.current.innerHTML = value || '';
+        }
+      } else if (initialContent && !editableRef.current.innerHTML) {
+        editableRef.current.innerHTML = initialContent;
+      }
+    }
+  }, [value, initialContent]);
+
+  const triggerChange = () => {
+    if (editableRef.current && onChange) {
+      onChange(editableRef.current.innerHTML);
     }
   };
 
+  const executeCommand = (command, val = null) => {
+    document.execCommand(command, false, val);
+    if (editableRef.current) {
+      editableRef.current.focus();
+    }
+    triggerChange();
+  };
+
   const handleHeaderChange = (e) => {
-    const value = e.target.value;
-    if (value === 'p') {
+    const headerVal = e.target.value;
+    if (headerVal === 'p') {
       executeCommand('formatBlock', '<p>');
     } else {
-      executeCommand('formatBlock', `<${value}>`);
+      executeCommand('formatBlock', `<${headerVal}>`);
     }
   };
 
@@ -155,7 +174,8 @@ const CKEditorField = ({ initialContent, placeholder }) => {
         contentEditable
         suppressContentEditableWarning
         placeholder={placeholder}
-        dangerouslySetInnerHTML={{ __html: initialContent || '' }}
+        onInput={triggerChange}
+        onBlur={triggerChange}
       />
     </div>
   );

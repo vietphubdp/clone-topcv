@@ -47,4 +47,19 @@ export const getJobs = async (params = {}) => {
   return response.data;
 };
 
+export const getJobDetail = async (slugOrId) => {
+  const response = await api.get(`/jobs/${slugOrId}`);
+  return response.data;
+};
+
+export const applyJob = async (jobId, payload) => {
+  const response = await api.post(`/jobs/${jobId}/apply`, payload);
+  return response.data;
+};
+
+export const createJob = async (payload) => {
+  const response = await api.post('/employer/jobs', payload);
+  return response.data;
+};
+
 export default api;

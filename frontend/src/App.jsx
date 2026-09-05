@@ -8,6 +8,7 @@ import Register from './pages/Register/Register';
 import RegisterCandidate from './pages/RegisterCandidate/RegisterCandidate';
 import JobDetail from './pages/JobDetail/JobDetail';
 import PostJob from './pages/PostJob/PostJob';
+import Jobs from './pages/Jobs/Jobs';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/register-candidate" element={<RegisterCandidate />} />
+          <Route path="/jobs" element={<Jobs />} />
           <Route path="/job-detail" element={<JobDetail />} />
           <Route path="/job/:id" element={<JobDetail />} />
           <Route path="/post-job" element={<PostJob />} />

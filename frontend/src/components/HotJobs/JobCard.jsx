@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Typography, IconButton, Tooltip } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import React from 'react';
+import { Box, Typography, Tooltip } from '@mui/material';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import StarIcon from '@mui/icons-material/Star';
@@ -48,7 +46,6 @@ const renderBadge = (badge, idx) => {
 };
 
 const JobCard = ({ job }) => {
-  const [isLiked, setIsLiked] = useState(false);
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -220,12 +217,12 @@ const JobCard = ({ job }) => {
         </Box>
       </Box>
 
-      {/* Bottom Section: Tags & Favorite Button */}
+      {/* Bottom Section: Tags */}
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
-          justify: 'space-between',
+          justifyContent: 'flex-start',
           mt: 1,
         }}
       >
@@ -257,35 +254,12 @@ const JobCard = ({ job }) => {
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
-              maxWidth: '120px',
+              maxWidth: '160px',
             }}
           >
             {formattedLocation}
           </Box>
         </Box>
-
-        {/* Favorite Heart Button */}
-        <IconButton
-          size="small"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsLiked(!isLiked);
-          }}
-          sx={{
-            width: 28,
-            height: 28,
-            border: '1px solid',
-            borderColor: isLiked ? '#00b14f' : '#d0d7de',
-            color: isLiked ? '#00b14f' : '#888888',
-            '&:hover': {
-              borderColor: '#00b14f',
-              backgroundColor: '#e6f7ef',
-              color: '#00b14f',
-            },
-          }}
-        >
-          {isLiked ? <FavoriteIcon sx={{ fontSize: '16px' }} /> : <FavoriteBorderIcon sx={{ fontSize: '16px' }} />}
-        </IconButton>
       </Box>
     </Box>
   );

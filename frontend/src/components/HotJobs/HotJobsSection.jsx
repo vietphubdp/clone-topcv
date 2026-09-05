@@ -36,6 +36,8 @@ const HotJobsSection = () => {
                   id: cat.id,
                   name: cat.name,
                   slug: cat.slug,
+                  group_name: group.group_name,
+                  group_slug: group.group_slug,
                 });
               });
             } else if (group.group_name && group.group_slug) {
@@ -43,6 +45,8 @@ const HotJobsSection = () => {
                 id: group.id,
                 name: group.group_name,
                 slug: group.group_slug,
+                group_name: group.group_name,
+                group_slug: group.group_slug,
               });
             }
           });
@@ -63,13 +67,71 @@ const HotJobsSection = () => {
     const fetchJobsData = async () => {
       setLoadingJobs(true);
       try {
-        const params = { page: currentPage };
-        if (activeCategorySlug && activeCategorySlug !== 'all') {
-          params.category_slug = activeCategorySlug;
+        let resultJobs = [];
+        let totalCount = 0;
+
+        if (!activeCategorySlug || activeCategorySlug === 'all') {
+          const response = await getJobs({ page: currentPage });
+          resultJobs = response.data || [];
+          totalCount = response.total || 0;
+        } else {
+          const selectedCat = categories.find((c) => c.slug === activeCategorySlug);
+          
+          // 1. Query by category_slug
+          const response = await getJobs({ page: 1, category_slug: activeCategorySlug });
+          let combined = response.data || [];
+
+          // 2. Also query by parent group slug if applicable
+          if (selectedCat?.group_slug && selectedCat.group_slug !== activeCategorySlug) {
+            const groupRes = await getJobs({ page: 1, category_slug: selectedCat.group_slug });
+            if (groupRes.data) {
+              combined = [...combined, ...groupRes.data];
+            }
+          }
+
+          // 3. Match from all jobs by specialty and category name
+          const allRes = await getJobs({ page: 1 });
+          const allList = allRes.data || [];
+          if (selectedCat) {
+            const matchedFromAll = allList.filter((j) => {
+              const catLower = (j.category || '').toLowerCase();
+              const specLower = (j.specialty || '').toLowerCase();
+              const selName = (selectedCat.name || '').toLowerCase();
+              const selGroupName = (selectedCat.group_name || '').toLowerCase();
+              const selSlug = (selectedCat.slug || '').toLowerCase();
+              const selGroupSlug = (selectedCat.group_slug || '').toLowerCase();
+
+              const catMatch =
+                (selName && catLower.includes(selName)) ||
+                (selGroupName && catLower.includes(selGroupName));
+              const specMatch =
+                (selName && (specLower.includes(selName) || selName.includes(specLower))) ||
+                (selGroupName && (specLower.includes(selGroupName) || selGroupName.includes(specLower)));
+              const slugMatch =
+                j.category_slug === selSlug ||
+                (selGroupSlug && j.category_slug === selGroupSlug);
+
+              return catMatch || specMatch || slugMatch;
+            });
+            combined = [...combined, ...matchedFromAll];
+          }
+
+          // Deduplicate by job id
+          const seenIds = new Set();
+          const uniqueJobs = [];
+          for (const job of combined) {
+            if (job && job.id && !seenIds.has(job.id)) {
+              seenIds.add(job.id);
+              uniqueJobs.push(job);
+            }
+          }
+
+          resultJobs = uniqueJobs;
+          totalCount = uniqueJobs.length;
         }
-        const response = await getJobs(params);
-        setJobs(response.data || []);
-        setTotalJobs(response.total || 0);
+
+        setJobs(resultJobs);
+        setTotalJobs(totalCount);
       } catch (err) {
         console.error('Error loading jobs:', err);
         setJobs([]);
@@ -80,7 +142,7 @@ const HotJobsSection = () => {
     };
 
     fetchJobsData();
-  }, [activeCategorySlug, currentPage]);
+  }, [activeCategorySlug, currentPage, categories]);
 
   const handleCategoryChange = (slug) => {
     setActiveCategorySlug(slug);

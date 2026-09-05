@@ -1,14 +1,43 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, InputBase, Button, MenuItem, Select, FormControl } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
+const CITY_OPTIONS = [
+  { value: 'all', label: 'Địa điểm', cityId: 0 },
+  { value: 'hanoi', label: 'Hà Nội', cityId: 1 },
+  { value: 'hcm', label: 'TP. Hồ Chí Minh', cityId: 2 },
+  { value: 'danang', label: 'Đà Nẵng', cityId: 3 },
+  { value: 'haiphong', label: 'Hải Phòng', cityId: 4 },
+  { value: 'cantho', label: 'Cần Thơ', cityId: 5 },
+  { value: 'binhduong', label: 'Bình Dương', cityId: 6 },
+  { value: 'dongnai', label: 'Đồng Nai', cityId: 7 },
+  { value: 'bacninh', label: 'Bắc Ninh', cityId: 8 },
+];
+
 const SearchBar = () => {
+  const navigate = useNavigate();
+  const [keyword, setKeyword] = useState('');
   const [location, setLocation] = useState('all');
+
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    const cityObj = CITY_OPTIONS.find((c) => c.value === location);
+    const cityId = cityObj && cityObj.cityId > 0 ? cityObj.cityId : 0;
+
+    const params = new URLSearchParams();
+    if (keyword.trim()) params.set('keyword', keyword.trim());
+    if (cityId > 0) params.set('city_id', cityId);
+
+    navigate(`/jobs?${params.toString()}`);
+  };
 
   return (
     <Box
+      component="form"
+      onSubmit={handleSearch}
       sx={{
         backgroundColor: '#ffffff',
         borderRadius: { xs: '24px', md: '50px' },
@@ -27,6 +56,8 @@ const SearchBar = () => {
       {/* Search Query Input */}
       <Box sx={{ width: '100%', flex: 1, display: 'flex', alignItems: 'center' }}>
         <InputBase
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
           placeholder="Vị trí tuyển dụng, tên công ty"
           sx={{
             ml: 1,
@@ -85,18 +116,18 @@ const SearchBar = () => {
               },
             }}
           >
-            <MenuItem value="all">Địa điểm</MenuItem>
-            <MenuItem value="hanoi">Hà Nội</MenuItem>
-            <MenuItem value="hcm">TP. Hồ Chí Minh</MenuItem>
-            <MenuItem value="danang">Đà Nẵng</MenuItem>
-            <MenuItem value="miennam">Miền Nam</MenuItem>
-            <MenuItem value="mienbac">Miền Bắc</MenuItem>
+            {CITY_OPTIONS.map((c) => (
+              <MenuItem key={c.value} value={c.value}>
+                {c.label}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Box>
 
       {/* Search Button */}
       <Button
+        type="submit"
         variant="contained"
         startIcon={<SearchIcon />}
         sx={{

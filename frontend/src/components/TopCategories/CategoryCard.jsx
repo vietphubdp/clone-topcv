@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
 const CategoryIcon = ({ type }) => {
@@ -112,9 +113,28 @@ const CategoryIcon = ({ type }) => {
   }
 };
 
+const SLUG_MAP = {
+  sales: 'kinh-doanh-ban-hang',
+  marketing: 'marketing-pr-quang-cao',
+  cs: 'cham-soc-khach-hang-van-hanh',
+  hr: 'nhan-su-hanh-chinh-phap-che',
+  it: 'cong-nghe-thong-tin',
+  finance: 'kinh-doanh-ban-hang',
+  realestate: 'sales-bat-dong-san',
+  accounting: 'nhan-su-hanh-chinh-phap-che',
+};
+
 const CategoryCard = ({ category }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    const slug = category.slug || SLUG_MAP[category.iconType] || 'cong-nghe-thong-tin';
+    navigate(`/jobs?category_slug=${encodeURIComponent(slug)}&category_name=${encodeURIComponent(category.title)}`);
+  };
+
   return (
     <Box
+      onClick={handleCardClick}
       sx={{
         backgroundColor: '#f8fafc',
         borderRadius: '16px',

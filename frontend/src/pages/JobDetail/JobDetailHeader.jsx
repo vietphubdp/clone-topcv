@@ -1,32 +1,90 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Typography, Button, Chip } from '@mui/material';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import SendIcon from '@mui/icons-material/Send';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
 
-const JobDetailHeader = () => {
-  const [isSaved, setIsSaved] = useState(false);
+const formatSalary = (salary) => {
+  if (!salary) return 'Thỏa thuận';
+  const { type, min, max, is_negotiable } = salary;
+  if (is_negotiable || type === 'AGREEMENT') return 'Thỏa thuận';
+  if (type === 'RANGE' && min && max) {
+    return `${(min / 1000000).toLocaleString('vi-VN')} - ${(max / 1000000).toLocaleString('vi-VN')} triệu`;
+  }
+  if ((type === 'UP_TO' || !min) && max) {
+    return `Tới ${(max / 1000000).toLocaleString('vi-VN')} triệu`;
+  }
+  if ((type === 'MINIMUM' || !max) && min) {
+    return `Từ ${(min / 1000000).toLocaleString('vi-VN')} triệu`;
+  }
+  return 'Thỏa thuận';
+};
+
+const formatDate = (dateString) => {
+  if (!dateString) return 'Chưa cập nhật';
+  try {
+    const d = new Date(dateString);
+    return d.toLocaleDateString('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+  } catch {
+    return dateString;
+  }
+};
+
+const JobDetailHeader = ({ job }) => {
+  if (!job) return null;
+
+  const company = job.company || {};
+  const companyName = company.company_name || company.short_name || 'Công ty';
+  const salaryText = formatSalary(job.salary);
+
+  const locationText =
+    Array.isArray(job.work_location) && job.work_location.length > 0
+      ? job.work_location
+          .map((loc) => loc.city_name || loc.address_detail)
+          .filter(Boolean)
+          .join(', ') || 'Toàn quốc'
+      : 'Toàn quốc';
+
+  const deadlineText = formatDate(job.deadline);
 
   return (
     <div className="job-detail-header-card">
       {/* Title & Company Name */}
       <Box sx={{ mb: 2.5 }}>
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: 800,
-            fontSize: { xs: '20px', md: '24px' },
-            color: '#212f3f',
-            mb: 1,
-            lineHeight: 1.3,
-          }}
-        >
-          NHÂN VIÊN KINH DOANH - THU NHẬP 15 - 30 TRIỆU
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, flexWrap: 'wrap' }}>
+          {job.is_hot && (
+            <Chip
+              icon={<FlashOnIcon sx={{ fontSize: '14px !important', color: '#ffffff !important' }} />}
+              label="TUYỂN GẤP"
+              size="small"
+              sx={{
+                backgroundColor: '#ef4444',
+                color: '#ffffff',
+                fontWeight: 800,
+                fontSize: '11px',
+                height: '22px',
+              }}
+            />
+          )}
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 800,
+              fontSize: { xs: '20px', md: '24px' },
+              color: '#212f3f',
+              lineHeight: 1.3,
+            }}
+          >
+            {job.title}
+          </Typography>
+        </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
           <Typography
@@ -34,24 +92,31 @@ const JobDetailHeader = () => {
               fontWeight: 700,
               fontSize: '15px',
               color: '#00b14f',
-              cursor: 'pointer',
-              '&:hover': { textDecoration: 'underline' },
             }}
           >
-            CÔNG TY TNHH PHÁT TRIỂN THƯƠNG MẠI Á CHÂU
+            {companyName}
           </Typography>
-          <VerifiedIcon sx={{ color: '#00b14f', fontSize: '18px' }} />
-          <Chip
-            label="TOP DOANH NGHIỆP"
-            size="small"
-            sx={{
-              backgroundColor: '#e6f7ef',
-              color: '#00b14f',
-              fontWeight: 700,
-              fontSize: '11px',
-              height: '22px',
-            }}
-          />
+
+          {company.verification_tier === 'VERIFIED' && (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3, color: '#00b14f' }}>
+              <VerifiedIcon sx={{ fontSize: '18px' }} />
+              <Typography sx={{ fontSize: '12px', fontWeight: 700 }}>Đã xác thực</Typography>
+            </Box>
+          )}
+
+          {company.category && (
+            <Chip
+              label={company.category}
+              size="small"
+              sx={{
+                backgroundColor: '#e6f7ef',
+                color: '#00b14f',
+                fontWeight: 600,
+                fontSize: '11px',
+                height: '22px',
+              }}
+            />
+          )}
         </Box>
       </Box>
 
@@ -78,7 +143,7 @@ const JobDetailHeader = () => {
               backgroundColor: '#e6f7ef',
               display: 'flex',
               alignItems: 'center',
-              justify: 'center',
+              justifyContent: 'center',
               color: '#00b14f',
             }}
           >
@@ -87,7 +152,7 @@ const JobDetailHeader = () => {
           <Box>
             <Typography sx={{ fontSize: '12.5px', color: '#666666' }}>Mức lương</Typography>
             <Typography sx={{ fontSize: '15px', fontWeight: 800, color: '#00b14f' }}>
-              15 - 30 triệu
+              {salaryText}
             </Typography>
           </Box>
         </Box>
@@ -102,7 +167,7 @@ const JobDetailHeader = () => {
               backgroundColor: '#e6f7ef',
               display: 'flex',
               alignItems: 'center',
-              justify: 'center',
+              justifyContent: 'center',
               color: '#00b14f',
             }}
           >
@@ -111,7 +176,7 @@ const JobDetailHeader = () => {
           <Box>
             <Typography sx={{ fontSize: '12.5px', color: '#666666' }}>Địa điểm</Typography>
             <Typography sx={{ fontSize: '15px', fontWeight: 700, color: '#212f3f' }}>
-              Hà Nội
+              {locationText}
             </Typography>
           </Box>
         </Box>
@@ -126,7 +191,7 @@ const JobDetailHeader = () => {
               backgroundColor: '#e6f7ef',
               display: 'flex',
               alignItems: 'center',
-              justify: 'center',
+              justifyContent: 'center',
               color: '#00b14f',
             }}
           >
@@ -135,7 +200,7 @@ const JobDetailHeader = () => {
           <Box>
             <Typography sx={{ fontSize: '12.5px', color: '#666666' }}>Kinh nghiệm</Typography>
             <Typography sx={{ fontSize: '15px', fontWeight: 700, color: '#212f3f' }}>
-              1 năm
+              {job.experience_level || 'Không yêu cầu'}
             </Typography>
           </Box>
         </Box>
@@ -146,14 +211,14 @@ const JobDetailHeader = () => {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          justify: 'space-between',
+          justifyContent: 'space-between',
           flexWrap: 'wrap',
           gap: 2,
         }}
       >
         <Typography sx={{ fontSize: '13.5px', color: '#666666', fontWeight: 500 }}>
           Hạn nộp hồ sơ:{' '}
-          <span style={{ color: '#212f3f', fontWeight: 700 }}>30/09/2026</span>
+          <span style={{ color: '#212f3f', fontWeight: 700 }}>{deadlineText}</span>
         </Typography>
 
         <Box sx={{ display: 'flex', gap: 1.5 }}>
@@ -174,31 +239,9 @@ const JobDetailHeader = () => {
                 backgroundColor: '#009643',
               },
             }}
-            onClick={() => alert('Ứng tuyển thành công! Nhà tuyển dụng sẽ sớm liên hệ với bạn.')}
+            onClick={() => alert('Ứng tuyển thành công! Nhà tuyển dụng sẽ xem xét hồ sơ của bạn.')}
           >
             Ứng tuyển ngay
-          </Button>
-
-          <Button
-            variant="outlined"
-            startIcon={isSaved ? <FavoriteIcon sx={{ color: '#00b14f' }} /> : <FavoriteBorderIcon />}
-            onClick={() => setIsSaved(!isSaved)}
-            sx={{
-              borderColor: '#00b14f',
-              color: '#00b14f',
-              borderRadius: '24px',
-              px: 2.5,
-              py: 1,
-              fontWeight: 700,
-              fontSize: '14px',
-              textTransform: 'none',
-              '&:hover': {
-                backgroundColor: '#e6f7ef',
-                borderColor: '#00b14f',
-              },
-            }}
-          >
-            {isSaved ? 'Đã lưu tin' : 'Lưu tin'}
           </Button>
         </Box>
       </Box>

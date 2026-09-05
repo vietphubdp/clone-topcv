@@ -128,9 +128,11 @@ const CategoryCard = ({ category }) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    const slug = category.slug || SLUG_MAP[category.iconType] || 'cong-nghe-thong-tin';
-    navigate(`/jobs?category_slug=${encodeURIComponent(slug)}&category_name=${encodeURIComponent(category.title)}`);
+    const slug = category.slug || '';
+    const name = category.title || '';
+    navigate(`/jobs?category_slug=${encodeURIComponent(slug)}&category_name=${encodeURIComponent(name)}`);
   };
+
 
   return (
     <Box

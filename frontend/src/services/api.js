@@ -42,6 +42,11 @@ export const getCategories = async () => {
   return response.data;
 };
 
+// Clean up any legacy deleted job ids from localStorage
+try {
+  localStorage.removeItem('admin_deleted_job_ids');
+} catch {}
+
 export const getJobs = async (params = {}) => {
   const response = await api.get('/jobs', { params });
   return response.data;
@@ -62,4 +67,13 @@ export const createJob = async (payload) => {
   return response.data;
 };
 
+export const createCV = async (payload) => {
+  const response = await api.post('/candidate/cvs', payload);
+  return response.data;
+};
+
 export default api;
+
+
+
+

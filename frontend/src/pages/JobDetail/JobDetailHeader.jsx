@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, Button, Chip } from '@mui/material';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
@@ -6,6 +6,8 @@ import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import SendIcon from '@mui/icons-material/Send';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
+import ApplyJobModal from '../../components/ApplyJobModal/ApplyJobModal';
+
 
 const formatSalary = (salary) => {
   if (!salary) return 'Thỏa thuận';
@@ -38,7 +40,10 @@ const formatDate = (dateString) => {
 };
 
 const JobDetailHeader = ({ job }) => {
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+
   if (!job) return null;
+
 
   const company = job.company || {};
   const companyName = company.company_name || company.short_name || 'Công ty';
@@ -239,14 +244,22 @@ const JobDetailHeader = ({ job }) => {
                 backgroundColor: '#009643',
               },
             }}
-            onClick={() => alert('Ứng tuyển thành công! Nhà tuyển dụng sẽ xem xét hồ sơ của bạn.')}
+            onClick={() => setIsApplyModalOpen(true)}
           >
             Ứng tuyển ngay
           </Button>
         </Box>
       </Box>
+
+      {/* Apply Job Modal */}
+      <ApplyJobModal
+        open={isApplyModalOpen}
+        onClose={() => setIsApplyModalOpen(false)}
+        job={job}
+      />
     </div>
   );
 };
 
 export default JobDetailHeader;
+

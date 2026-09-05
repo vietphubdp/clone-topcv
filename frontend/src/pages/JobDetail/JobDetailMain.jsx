@@ -3,7 +3,9 @@ import { Box, Typography, Button, Divider, CircularProgress } from '@mui/materia
 import SendIcon from '@mui/icons-material/Send';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import JobCard from '../../components/HotJobs/JobCard';
+import ApplyJobModal from '../../components/ApplyJobModal/ApplyJobModal';
 import { getJobs } from '../../services/api';
+
 
 const formatDate = (dateString) => {
   if (!dateString) return 'Chưa cập nhật';
@@ -22,6 +24,8 @@ const formatDate = (dateString) => {
 const JobDetailMain = ({ job }) => {
   const [relatedJobs, setRelatedJobs] = useState([]);
   const [loadingRelated, setLoadingRelated] = useState(false);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+
 
   useEffect(() => {
     const fetchRelated = async () => {
@@ -130,7 +134,7 @@ const JobDetailMain = ({ job }) => {
             <Button
               variant="contained"
               startIcon={<SendIcon />}
-              onClick={() => alert('Ứng tuyển thành công! Nhà tuyển dụng sẽ xem xét hồ sơ của bạn.')}
+              onClick={() => setIsApplyModalOpen(true)}
               sx={{
                 backgroundColor: '#00b14f',
                 color: '#ffffff',
@@ -149,6 +153,14 @@ const JobDetailMain = ({ job }) => {
           </Box>
         </Box>
       </div>
+
+      {/* Apply Job Modal */}
+      <ApplyJobModal
+        open={isApplyModalOpen}
+        onClose={() => setIsApplyModalOpen(false)}
+        job={job}
+      />
+
 
       {/* Related Jobs Section */}
       {relatedJobs.length > 0 && (

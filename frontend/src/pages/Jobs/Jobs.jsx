@@ -179,53 +179,49 @@ const Jobs = () => {
           jobList = res.data || [];
           totalCount = res.total || 0;
         } else {
-          // 1. Fetch by category_slug
-          const res = await getJobs({
-            page: 1,
-            category_slug: categorySlug,
-            keyword: keyword.trim() || undefined,
-            city_id: selectedCityId && selectedCityId > 0 ? selectedCityId : undefined,
-          });
-          let combined = res.data || [];
-
-          // 2. Also match from all jobs by specialty and category name
+          // Fetch all jobs and filter accurately by category / specialty / slug
           const allRes = await getJobs({
             page: 1,
             keyword: keyword.trim() || undefined,
             city_id: selectedCityId && selectedCityId > 0 ? selectedCityId : undefined,
           });
           const allList = allRes.data || [];
-          const searchSlug = (categorySlug || '').toLowerCase();
-          const searchName = (categoryName || '').toLowerCase();
+          const searchSlug = (categorySlug || '').trim().toLowerCase();
+          const searchName = (categoryName || '').trim().toLowerCase();
 
-          const matchedFromAll = allList.filter((j) => {
-            const catLower = (j.category || '').toLowerCase();
-            const specLower = (j.specialty || '').toLowerCase();
-            const jSlug = (j.category_slug || '').toLowerCase();
+          const toSlug = (str = '') =>
+            str
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/đ/g, 'd')
+              .replace(/Đ/g, 'd')
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/(^-|-$)+/g, '');
 
-            const matchSlug = jSlug === searchSlug;
+          const matchedJobs = allList.filter((j) => {
+            const jCat = (j.category || '').trim().toLowerCase();
+            const jSpec = (j.specialty || '').trim().toLowerCase();
+            const jCatSlug = toSlug(jCat);
+            const jSpecSlug = toSlug(jSpec);
+
             const matchName =
-              (searchName && (catLower.includes(searchName) || specLower.includes(searchName))) ||
-              (searchSlug && (catLower.includes(searchSlug) || specLower.includes(searchSlug)));
+              searchName &&
+              ((jCat && (jCat === searchName || jCat.includes(searchName) || searchName.includes(jCat))) ||
+               (jSpec && (jSpec === searchName || jSpec.includes(searchName) || searchName.includes(jSpec))));
 
-            return matchSlug || matchName;
+            const matchSlug =
+              searchSlug &&
+              ((jCatSlug && (jCatSlug === searchSlug || jCatSlug.includes(searchSlug) || searchSlug.includes(jCatSlug))) ||
+               (jSpecSlug && (jSpecSlug === searchSlug || jSpecSlug.includes(searchSlug) || searchSlug.includes(jSpecSlug))));
+
+            return Boolean(matchName || matchSlug);
           });
 
-          combined = [...combined, ...matchedFromAll];
-
-          // Deduplicate by job id
-          const seenIds = new Set();
-          const uniqueJobs = [];
-          for (const job of combined) {
-            if (job && job.id && !seenIds.has(job.id)) {
-              seenIds.add(job.id);
-              uniqueJobs.push(job);
-            }
-          }
-
-          jobList = uniqueJobs;
-          totalCount = uniqueJobs.length;
+          jobList = matchedJobs;
+          totalCount = matchedJobs.length;
         }
+
 
         // Client-side refined filtering by Experience if selected
         if (selectedExp.length > 0 && !selectedExp.includes('Tất cả')) {

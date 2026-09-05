@@ -27,8 +27,10 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { logoutUser } from '../../services/api';
 import './Navbar.css';
+
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -266,6 +268,22 @@ const Navbar = () => {
                 </Box>
                 <Divider />
                 <MenuItem
+                  onClick={() => {
+                    setUserMenuAnchor(null);
+                    navigate('/admin');
+                  }}
+                  sx={{
+                    color: '#0f172a',
+                    fontWeight: 600,
+                    fontSize: '13.5px',
+                    borderRadius: 1,
+                    my: 0.5,
+                    gap: 1,
+                  }}
+                >
+                  <AdminPanelSettingsIcon fontSize="small" sx={{ color: '#00b14f' }} /> Trang Quản trị
+                </MenuItem>
+                <MenuItem
                   onClick={handleLogout}
                   sx={{
                     color: '#d32f2f',
@@ -278,6 +296,7 @@ const Navbar = () => {
                 >
                   <LogoutIcon fontSize="small" /> Đăng xuất
                 </MenuItem>
+
               </Menu>
             </>
           ) : (
@@ -537,6 +556,23 @@ const Navbar = () => {
 
               <Button
                 variant="outlined"
+                fullWidth
+                startIcon={<AdminPanelSettingsIcon />}
+                onClick={() => { setMobileOpen(false); navigate('/admin'); }}
+                sx={{
+                  borderColor: '#00b14f',
+                  color: '#00b14f',
+                  borderRadius: '20px',
+                  fontWeight: 700,
+                  textTransform: 'none',
+                  '&:hover': { bgcolor: '#e6f7ef' },
+                }}
+              >
+                Trang Quản trị
+              </Button>
+
+              <Button
+                variant="outlined"
                 color="error"
                 fullWidth
                 startIcon={<LogoutIcon />}
@@ -545,6 +581,7 @@ const Navbar = () => {
               >
                 Đăng xuất
               </Button>
+
             </>
           ) : (
             <>

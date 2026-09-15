@@ -3,6 +3,7 @@ import { Box, Typography } from '@mui/material';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import logoImg from '../../assets/logo.png';
 import './Footer.css';
 
 const Footer = () => {
@@ -40,18 +41,14 @@ const Footer = () => {
         <div className="footer-columns-grid">
           {/* Column 1: Brand & Contact Info */}
           <div>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px', mb: 1.5 }}>
-              <Typography sx={{ fontSize: '24px', fontWeight: 900, color: '#212f3f' }}>
-                top<span style={{ color: '#00b14f' }}>cv</span>
-              </Typography>
-              <Box
-                sx={{
-                  width: '18px',
-                  height: '18px',
-                  background: 'linear-gradient(135deg, #00b14f 0%, #008037 100%)',
-                  borderRadius: '50% 50% 50% 0',
-                  transform: 'rotate(-10deg)',
-                }}
+            <Box
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              sx={{ display: 'inline-block', mb: 1.5, cursor: 'pointer' }}
+            >
+              <img
+                src={logoImg}
+                alt="TopCV"
+                style={{ height: '42px', width: 'auto', objectFit: 'contain', display: 'block' }}
               />
             </Box>
 

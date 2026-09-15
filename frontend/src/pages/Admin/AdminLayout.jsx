@@ -23,19 +23,14 @@ import {
   Tooltip,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import WorkIcon from '@mui/icons-material/Work';
 import BusinessIcon from '@mui/icons-material/Business';
-import PeopleIcon from '@mui/icons-material/People';
-import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const DRAWER_WIDTH = 260;
 
-const AdminLayout = ({ children, title = 'Quản lý việc làm' }) => {
+const AdminLayout = ({ children, title = 'Danh sách công ty' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
@@ -64,60 +59,14 @@ const AdminLayout = ({ children, title = 'Quản lý việc làm' }) => {
   };
 
   const navMenuItems = [
-    { text: 'Tổng quan', icon: <DashboardIcon />, path: '/admin', active: location.pathname === '/admin' },
-    { text: 'Quản lý việc làm', icon: <WorkIcon />, path: '/admin/jobs', active: location.pathname.startsWith('/admin/jobs') || location.pathname === '/admin' },
-    { text: 'Quản lý công ty', icon: <BusinessIcon />, path: '/admin/companies', disabled: true, badge: 'Sắp ra mắt' },
-    { text: 'Quản lý ứng viên', icon: <PeopleIcon />, path: '/admin/candidates', disabled: true, badge: 'Sắp ra mắt' },
-    { text: 'Cài đặt hệ thống', icon: <SettingsIcon />, path: '/admin/settings', disabled: true, badge: 'Sắp ra mắt' },
+    { text: 'Danh sách công ty', icon: <BusinessIcon />, path: '/admin', active: true },
   ];
 
   const drawerContent = (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: '#1e293b', color: '#f8fafc' }}>
-      {/* Brand Header */}
-      <Box sx={{ p: 2.5, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-        <Box
-          sx={{
-            width: 40,
-            height: 40,
-            borderRadius: '10px',
-            bgcolor: '#00b14f',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#ffffff',
-            boxShadow: '0 4px 12px rgba(0, 177, 79, 0.4)',
-          }}
-        >
-          <AdminPanelSettingsIcon sx={{ fontSize: 24 }} />
-        </Box>
-        <Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <Typography sx={{ fontWeight: 900, fontSize: '18px', color: '#ffffff', letterSpacing: '-0.5px' }}>
-              top<span style={{ color: '#00b14f' }}>cv</span>
-            </Typography>
-            <Chip
-              label="ADMIN"
-              size="small"
-              sx={{
-                bgcolor: 'rgba(0, 177, 79, 0.2)',
-                color: '#4ade80',
-                fontWeight: 800,
-                fontSize: '10px',
-                height: '18px',
-              }}
-            />
-          </Box>
-          <Typography sx={{ fontSize: '11px', color: '#94a3b8', fontWeight: 500 }}>
-            Hệ thống Quản trị Tuyển dụng
-          </Typography>
-        </Box>
-      </Box>
-
-      <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)' }} />
-
       {/* Navigation Links */}
-      <Box sx={{ flex: 1, py: 2, px: 1.5 }}>
-        <Typography sx={{ px: 1.5, mb: 1, fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
+      <Box sx={{ flex: 1, py: 2.5, px: 1.5 }}>
+        <Typography sx={{ px: 1.5, mb: 1.5, fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
           Menu chính
         </Typography>
         <List disablePadding>
@@ -125,28 +74,26 @@ const AdminLayout = ({ children, title = 'Quản lý việc làm' }) => {
             <ListItem key={index} disablePadding sx={{ mb: 0.5 }}>
               <ListItemButton
                 onClick={() => {
-                  if (!item.disabled && item.path) {
-                    navigate(item.path);
-                    if (isMobile) setMobileOpen(false);
-                  }
+                  navigate(item.path);
+                  if (isMobile) setMobileOpen(false);
                 }}
-                disabled={item.disabled}
                 sx={{
                   borderRadius: '10px',
-                  py: 1.2,
-                  px: 1.5,
-                  bgcolor: item.active ? '#00b14f' : 'transparent',
-                  color: item.active ? '#ffffff' : item.disabled ? '#475569' : '#cbd5e1',
+                  py: 1.3,
+                  px: 1.8,
+                  bgcolor: '#00b14f',
+                  color: '#ffffff',
+                  boxShadow: '0 4px 12px rgba(0, 177, 79, 0.3)',
                   '&:hover': {
-                    bgcolor: item.active ? '#009643' : 'rgba(255, 255, 255, 0.06)',
-                    color: item.active ? '#ffffff' : '#f8fafc',
+                    bgcolor: '#009643',
+                    color: '#ffffff',
                   },
                 }}
               >
                 <ListItemIcon
                   sx={{
-                    minWidth: 36,
-                    color: item.active ? '#ffffff' : item.disabled ? '#475569' : '#94a3b8',
+                    minWidth: 38,
+                    color: '#ffffff',
                   }}
                 >
                   {item.icon}
@@ -154,103 +101,14 @@ const AdminLayout = ({ children, title = 'Quản lý việc làm' }) => {
                 <ListItemText
                   primary={item.text}
                   primaryTypographyProps={{
-                    fontSize: '13.5px',
-                    fontWeight: item.active ? 700 : 500,
+                    fontSize: '14px',
+                    fontWeight: 700,
                   }}
                 />
-                {item.badge && (
-                  <Chip
-                    label={item.badge}
-                    size="small"
-                    sx={{
-                      fontSize: '9.5px',
-                      height: '18px',
-                      bgcolor: 'rgba(255,255,255,0.06)',
-                      color: '#64748b',
-                      fontWeight: 600,
-                    }}
-                  />
-                )}
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-      </Box>
-
-      {/* Back to Website button */}
-      <Box sx={{ p: 1.5 }}>
-        <Button
-          fullWidth
-          variant="outlined"
-          startIcon={<OpenInNewIcon />}
-          onClick={() => navigate('/')}
-          sx={{
-            borderColor: 'rgba(255, 255, 255, 0.15)',
-            color: '#cbd5e1',
-            textTransform: 'none',
-            fontSize: '13px',
-            fontWeight: 600,
-            borderRadius: '8px',
-            py: 0.8,
-            '&:hover': {
-              borderColor: '#00b14f',
-              color: '#00b14f',
-              bgcolor: 'rgba(0, 177, 79, 0.08)',
-            },
-          }}
-        >
-          Xem Trang Web
-        </Button>
-      </Box>
-
-      <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)' }} />
-
-      {/* User Info Bottom Card */}
-      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', bgcolor: '#0f172a' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, minWidth: 0 }}>
-          <Avatar
-            sx={{
-              width: 34,
-              height: 34,
-              bgcolor: '#00b14f',
-              fontSize: '14px',
-              fontWeight: 800,
-            }}
-          >
-            {(currentUser.full_name || currentUser.email || 'A')[0].toUpperCase()}
-          </Avatar>
-          <Box sx={{ minWidth: 0 }}>
-            <Typography
-              sx={{
-                fontSize: '13px',
-                fontWeight: 700,
-                color: '#f8fafc',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {currentUser.full_name || 'Admin'}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: '11px',
-                color: '#64748b',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {currentUser.email || 'admin@topcv.vn'}
-            </Typography>
-          </Box>
-        </Box>
-
-        <Tooltip title="Đăng xuất">
-          <IconButton onClick={handleLogout} size="small" sx={{ color: '#ef4444' }}>
-            <LogoutIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
       </Box>
     </Box>
   );

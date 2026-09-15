@@ -17,6 +17,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import BusinessIcon from '@mui/icons-material/Business';
 import { useNavigate } from 'react-router-dom';
 import { registerCompany } from '../../services/api';
+import logoImg from '../../assets/logo.png';
 import './Register.css';
 
 const Register = () => {
@@ -133,29 +134,15 @@ const Register = () => {
               sx={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '4px',
+                justifyContent: 'center',
                 cursor: 'pointer',
-                mb: 0.5,
+                mb: 1.5,
               }}
             >
-              <Typography
-                sx={{
-                  fontSize: '28px',
-                  fontWeight: 900,
-                  color: '#212f3f',
-                  letterSpacing: '-0.5px',
-                }}
-              >
-                top<span style={{ color: '#00b14f' }}>cv</span>
-              </Typography>
-              <Box
-                sx={{
-                  width: '20px',
-                  height: '20px',
-                  background: 'linear-gradient(135deg, #00b14f 0%, #008037 100%)',
-                  borderRadius: '50% 50% 50% 0',
-                  transform: 'rotate(-10deg)',
-                }}
+              <img
+                src={logoImg}
+                alt="TopCV"
+                style={{ height: '48px', width: 'auto', objectFit: 'contain', display: 'block' }}
               />
             </Box>
 

@@ -29,6 +29,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { logoutUser } from '../../services/api';
+import logoImg from '../../assets/logo.png';
 import './Navbar.css';
 
 
@@ -128,12 +129,7 @@ const Navbar = () => {
 
           {/* Logo */}
           <div className="brand-logo-wrapper" onClick={() => navigate('/')}>
-            <div className="brand-logo-text">
-              <span>top</span>
-              <span style={{ color: '#00b14f' }}>cv</span>
-              <span className="brand-logo-icon"></span>
-            </div>
-            <span className="brand-slogan">Tiếp lợi thế - Nối thành công</span>
+            <img src={logoImg} alt="TopCV" className="brand-logo-img" />
           </div>
 
           {/* Desktop Nav Menu Links */}
@@ -380,12 +376,7 @@ const Navbar = () => {
         {/* Drawer Header */}
         <div className="mobile-drawer-header">
           <div className="brand-logo-wrapper" onClick={() => { setMobileOpen(false); navigate('/'); }}>
-            <div className="brand-logo-text">
-              <span>top</span>
-              <span style={{ color: '#00b14f' }}>cv</span>
-              <span className="brand-logo-icon"></span>
-            </div>
-            <span className="brand-slogan">Tiếp lợi thế - Nối thành công</span>
+            <img src={logoImg} alt="TopCV" className="brand-logo-img" />
           </div>
 
           <IconButton onClick={toggleMobileDrawer(false)}>

@@ -23,12 +23,24 @@
 
 .brand-logo-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+.brand-logo-img {
+  height: 42px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.brand-logo-wrapper:hover .brand-logo-img {
+  transform: scale(1.02);
 }
 
 .brand-logo-text {

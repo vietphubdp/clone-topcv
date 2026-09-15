@@ -9,7 +9,7 @@ import RegisterCandidate from './pages/RegisterCandidate/RegisterCandidate';
 import JobDetail from './pages/JobDetail/JobDetail';
 import PostJob from './pages/PostJob/PostJob';
 import Jobs from './pages/Jobs/Jobs';
-import AdminJobs from './pages/Admin/AdminJobs';
+import AdminCompanies from './pages/Admin/AdminCompanies';
 
 function App() {
   return (
@@ -25,8 +25,8 @@ function App() {
           <Route path="/job-detail" element={<JobDetail />} />
           <Route path="/job/:id" element={<JobDetail />} />
           <Route path="/post-job" element={<PostJob />} />
-          <Route path="/admin" element={<AdminJobs />} />
-          <Route path="/admin/jobs" element={<AdminJobs />} />
+          <Route path="/admin" element={<AdminCompanies />} />
+          <Route path="/admin/companies" element={<AdminCompanies />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

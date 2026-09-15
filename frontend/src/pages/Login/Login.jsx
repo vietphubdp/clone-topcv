@@ -15,6 +15,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../services/api';
+import logoImg from '../../assets/logo.png';
 import './Login.css';
 
 // SVG Icons for Google, Facebook, and LinkedIn
@@ -123,29 +124,15 @@ const Login = () => {
               sx={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '4px',
+                justifyContent: 'center',
                 cursor: 'pointer',
-                mb: 0.5,
+                mb: 1.5,
               }}
             >
-              <Typography
-                sx={{
-                  fontSize: '28px',
-                  fontWeight: 900,
-                  color: '#212f3f',
-                  letterSpacing: '-0.5px',
-                }}
-              >
-                top<span style={{ color: '#00b14f' }}>cv</span>
-              </Typography>
-              <Box
-                sx={{
-                  width: '20px',
-                  height: '20px',
-                  background: 'linear-gradient(135deg, #00b14f 0%, #008037 100%)',
-                  borderRadius: '50% 50% 50% 0',
-                  transform: 'rotate(-10deg)',
-                }}
+              <img
+                src={logoImg}
+                alt="TopCV"
+                style={{ height: '48px', width: 'auto', objectFit: 'contain', display: 'block' }}
               />
             </Box>
 

@@ -4,6 +4,7 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import { useNavigate } from 'react-router-dom';
+import logoImg from '../../assets/logo.png';
 import './PostJobNavbar.css';
 
 const PostJobNavbar = () => {
@@ -19,21 +20,13 @@ const PostJobNavbar = () => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
               cursor: 'pointer',
             }}
           >
-            <Typography sx={{ fontSize: '24px', fontWeight: 900, color: '#212f3f' }}>
-              top<span style={{ color: '#00b14f' }}>cv</span>
-            </Typography>
-            <Box
-              sx={{
-                width: '16px',
-                height: '16px',
-                background: 'linear-gradient(135deg, #00b14f 0%, #008037 100%)',
-                borderRadius: '50% 50% 50% 0',
-                transform: 'rotate(-10deg)',
-              }}
+            <img
+              src={logoImg}
+              alt="TopCV"
+              style={{ height: '38px', width: 'auto', objectFit: 'contain', display: 'block' }}
             />
           </Box>
 
